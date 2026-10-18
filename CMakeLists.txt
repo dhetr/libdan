@@ -10,6 +10,7 @@ include(CTest)
 
 add_library(dan
 	src/dimension.cpp
+	src/unit.cpp
 	src/libdan.cpp
 )
 
@@ -49,6 +50,7 @@ if(BUILD_TESTING)
 
 	add_executable(libdan_tests
 		tests/test_dimension.cpp
+		tests/test_unit.cpp
 	)
 
 	target_include_directories(libdan_tests PRIVATE
