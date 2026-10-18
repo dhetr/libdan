@@ -9,18 +9,32 @@ option(BUILD_SHARED_LIBS "Build shared libraries" OFF)
 include(CTest)
 
 add_library(dan
+	src/dimension.cpp
 	src/libdan.cpp
+)
+
+set_target_properties(dan PROPERTIES
+	VERSION   ${PROJECT_VERSION}
+	SOVERSION ${PROJECT_VERSION_MAJOR}
 )
 
 add_library(libdan::dan ALIAS dan)
 
-target_compile_features(dan PUBLIC cxx_std_17)
+target_compile_features(dan PUBLIC cxx_std_20)
 
 target_include_directories(dan
-    PUBLIC
-	$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-	$<INSTALL_INTERFACE:include>
+	PUBLIC
+		$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+		$<INSTALL_INTERFACE:include>
+	PRIVATE
+		${CMAKE_CURRENT_SOURCE_DIR}/src
 )
+
+if (MSVC)
+	target_compile_options(dan PRIVATE /W4)
+else ()
+	target_compile_options(dan PRIVATE -Wall -Wextra -Wpedantic)
+endif ()
 
 if(BUILD_TESTING)
 	include(FetchContent)
@@ -34,7 +48,11 @@ if(BUILD_TESTING)
 	FetchContent_MakeAvailable(Catch2)
 
 	add_executable(libdan_tests
-		tests/test_libdan.cpp
+		tests/test_dimension.cpp
+	)
+
+	target_include_directories(libdan_tests PRIVATE
+		src
 	)
 
 	target_link_libraries(libdan_tests
