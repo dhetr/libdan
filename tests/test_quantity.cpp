@@ -73,3 +73,121 @@ TEST_CASE("Quantity supports conversion to the same unit", "[quantity]") {
 	CHECK(converted.value() == Catch::Approx(42.0));
 	CHECK(converted.unit().symbol() == "m");
 }
+
+TEST_CASE("Quantities can be added", "[quantity]") {
+	const auto length = Dimension::base(0);
+	const Unit metre(length, 1.0, "m");
+	const Unit kilometre(length, 1000.0, "km");
+
+	const Quantity a(2.0, kilometre);
+	const Quantity b(300.0, metre);
+
+	const auto result = a + b;
+
+	CHECK(result.value() == Catch::Approx(2.3));
+	CHECK(result.unit().symbol() == "km");
+}
+
+TEST_CASE("Quantities can be subtracted", "[quantity]") {
+	const auto length = Dimension::base(0);
+	const Unit metre(length, 1.0, "m");
+	const Unit kilometre(length, 1000.0, "km");
+
+	const Quantity a(2.0, kilometre);
+	const Quantity b(300.0, metre);
+
+	const auto result = a - b;
+
+	CHECK(result.value() == Catch::Approx(1.7));
+	CHECK(result.unit().symbol() == "km");
+}
+
+TEST_CASE("Quantity arithmetic does not modify its operands", "[quantity]") {
+	const auto length = Dimension::base(0);
+	const Unit metre(length, 1.0, "m");
+	const Unit kilometre(length, 1000.0, "km");
+
+	const Quantity a(2.0, kilometre);
+	const Quantity b(300.0, metre);
+
+	const auto add = a + b;
+	const auto sub = a - b;
+
+	CHECK(a.value() == Catch::Approx(2.0));
+	CHECK(a.unit().symbol() == "km");
+	CHECK(b.value() == Catch::Approx(300.0));
+	CHECK(b.unit().symbol() == "m");
+}
+
+TEST_CASE("Multiplying quantities combines dimensions and scales", "[quantity]") {
+	const auto length = Dimension::base(0);
+	const auto time = Dimension::base(1);
+
+	const Unit metre(length, 1.0, "m");
+	const Unit kilometre(length, 1000.0, "km");
+	const Unit second(time, 1.0, "s");
+
+	SECTION("Length times length") {
+		const Quantity a(2.0, kilometre);
+		const Quantity b(3.0, metre);
+
+		const auto result = a * b;
+
+		CHECK(result.value() == Catch::Approx(6.0));
+		CHECK(result.unit().scale() == Catch::Approx(1000.0));
+		CHECK(result.unit().dimension() == length * length);
+		CHECK(result.unit().symbol() == "(km*m)");
+	}
+
+	SECTION("Length times time") {
+		const Quantity distance(10.0, metre);
+		const Quantity duration(2.0, second);
+
+		const auto result = distance * duration;
+
+		CHECK(result.value() == Catch::Approx(20.0));
+		CHECK(result.unit().dimension() == length * time);
+		CHECK(result.unit().scale() == Catch::Approx(1.0));
+	}
+}
+
+TEST_CASE("Dividing quantities combines dimensions and scales", "[quantity]") {
+	const auto length = Dimension::base(0);
+	const auto time = Dimension::base(1);
+
+	const Unit metre(length, 1.0, "m");
+	const Unit kilometre(length, 1000.0, "km");
+	const Unit second(time, 1.0, "s");
+
+	SECTION("Length divided by time") {
+		const Quantity distance(10.0, kilometre);
+		const Quantity duration(2.0, second);
+
+		const auto result = distance / duration;
+
+		CHECK(result.value() == Catch::Approx(5.0));
+		CHECK(result.unit().scale() == Catch::Approx(1000.0));
+		CHECK(result.unit().dimension() == length / time);
+		CHECK(result.unit().symbol() == "(km/s)");
+	}
+
+	SECTION("Length divided by length is dimensionless") {
+		const Quantity a(6.0, kilometre);
+		const Quantity b(3.0, metre);
+
+		const auto result = a / b;
+
+		CHECK(result.value() == Catch::Approx(2.0));
+		CHECK(result.unit().scale() == Catch::Approx(1000.0));
+		CHECK(result.unit().dimension().is_dimensionless());
+	}
+}
+
+TEST_CASE("Dividing a quantity by zero throws", "[quantity]") {
+	const Unit metre(Dimension::base(0), 1.0, "m");
+
+	const Quantity distance(5.0, metre);
+	const Quantity zero(0.0, metre);
+
+	CHECK_THROWS_AS(distance / zero, std::domain_error);
+}

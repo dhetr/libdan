@@ -26,4 +26,45 @@ namespace libdan::internal {
 		
 		return Quantity(converted_value, target);
 	}
+
+	Quantity operator+(const Quantity& a, const Quantity& b) {
+		const Quantity converted_b = b.to(a.unit_);
+
+		return Quantity(
+			a.value_ + converted_b.value_,
+			a.unit_
+		);
+	}
+
+	Quantity operator-(const Quantity& a, const Quantity& b) {
+		const Quantity converted_b = b.to(a.unit_);
+
+		return Quantity(
+			a.value_ - converted_b.value_,
+			a.unit_
+		);
+	}
+
+	Quantity operator*(const Quantity& a, const Quantity& b) {
+		const Dimension dimension = a.unit_.dimension() * b.unit_.dimension();
+		const double scale = a.unit_.scale() * b.unit_.scale();
+
+		const std::string symbol = "(" + a.unit_.symbol() + "*" + b.unit_.symbol() + ")";
+
+		const Unit result_unit(dimension, scale, symbol);
+		return Quantity(a.value_ * b.value_, result_unit);
+	}
+
+	Quantity operator/(const Quantity& a, const Quantity& b) {
+		if (b.value_ == 0.0)
+			throw std::domain_error("Cannot divide a quantity by zero");
+
+		const Dimension dimension = a.unit_.dimension() / b.unit_.dimension();
+		const double scale = a.unit_.scale() / b.unit_.scale();
+
+		const std::string symbol = "(" + a.unit_.symbol() + "/" + b.unit_.symbol() + ")";
+
+		const Unit result_unit(dimension, scale, symbol);
+		return Quantity(a.value_ / b.value_, result_unit);
+	}
 }

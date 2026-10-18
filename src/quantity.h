@@ -11,6 +11,12 @@ namespace libdan::internal {
 		[[nodiscard]] const Unit& unit() const noexcept;
 
 		[[nodiscard]] Quantity to(const Unit& target) const;
+
+		friend Quantity operator+(const Quantity&, const Quantity&);
+		friend Quantity operator-(const Quantity&, const Quantity&);
+
+		friend Quantity operator*(const Quantity&, const Quantity&);
+		friend Quantity operator/(const Quantity&, const Quantity&);
 	
 	private:
 		double value_;
