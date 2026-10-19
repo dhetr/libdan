@@ -30,4 +30,24 @@ namespace libdan::internal {
 
 		return id;
 	}
+
+	UnitId UnitSystem::add_unit(Unit unit) {
+		if (&unit.dimension().system() != this) {
+			throw std::invalid_argument(
+				"Unit dimension belongs to a different unit system"
+			);
+		}
+
+		const UnitId id = units_.size();
+		units_.push_back(std::move(unit));
+		return id;
+	}
+
+	const Unit& UnitSystem::unit(UnitId id) const {
+		if (id >= units_.size()) {
+			throw std::out_of_range("Invalid unit ID");
+		}
+
+		return units_[id];
+	}
 }
