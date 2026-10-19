@@ -71,3 +71,14 @@ if(BUILD_TESTING)
 	include(Catch)
 	catch_discover_tests(libdan_tests)
 endif()
+
+option(LIBDAN_BUILD_EXAMPLES "Build libdan examples" ON)
+
+if(LIBDAN_BUILD_EXAMPLES)
+	add_executable(libdan_basic_example
+		examples/basic.cpp
+	)
+	target_link_libraries(libdan_basic_example
+		PRIVATE libdan::dan
+	)
+endif()
