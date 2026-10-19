@@ -1,14 +1,15 @@
-#include "dimension.h"
 #include <stdexcept>
-#include <unit.h>
+#include <dimension.h>
+#include <libdan/unit.h>
 
 #include <cmath>
 
-namespace libdan::internal {
-	Unit::Unit(Dimension dimension, double scale, std::string symbol) :
-		dimension_(std::move(dimension)),
-		scale_(scale),
-		symbol_(std::move(symbol))
+namespace libdan {
+	Unit::Unit(Dimension dimension, double scale, std::string symbol)
+        : dimension_(
+              std::make_shared<const Dimension>(std::move(dimension))),
+          scale_(scale),
+          symbol_(std::move(symbol))
 	{
 		if (!std::isfinite(scale_) || scale_ <= 0.0) {
 			throw std::invalid_argument("Unit scale must be finite and positive");
@@ -20,7 +21,7 @@ namespace libdan::internal {
 	}
 
 	const Dimension& Unit::dimension() const noexcept {
-		return dimension_;
+		return *dimension_;
 	}
 
 	double Unit::scale() const noexcept {

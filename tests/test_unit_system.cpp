@@ -1,11 +1,12 @@
 #include <catch2/catch_test_macros.hpp>
 #include <catch2/catch_approx.hpp>
 #include <types.h>
+#include <dimension.h>
 #include <unit_system.h>
 
 using libdan::internal::UnitSystem;
 using libdan::internal::Dimension;
-using libdan::internal::Unit;
+using libdan::Unit;
 using libdan::internal::UnitId;
 
 TEST_CASE("UnitSystem stores its name", "[unit-system]") {

@@ -1,8 +1,8 @@
 #pragma once
 
-#include <unit.h>
+#include <libdan/unit.h>
 
-namespace libdan::internal {
+namespace libdan {
 	class Quantity {
 	public:
 		Quantity(double value, Unit unit);

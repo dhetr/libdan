@@ -1,10 +1,11 @@
 #include <catch2/catch_test_macros.hpp>
 
 #include <unit_system.h>
-#include <unit.h>
+#include <dimension.h>
+#include <libdan/libdan.h>
 
 using libdan::internal::Dimension;
-using libdan::internal::Unit;
+using libdan::Unit;
 using libdan::internal::UnitSystem;
 
 TEST_CASE("Unit stores its dimension, scale, and symbol", "[unit]") {

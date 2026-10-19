@@ -1,11 +1,12 @@
 #include <catch2/catch_test_macros.hpp>
 #include <catch2/catch_approx.hpp>
 #include <unit_system.h>
-#include <quantity.h>
+#include <dimension.h>
+#include <libdan/libdan.h>
 
 using libdan::internal::Dimension;
-using libdan::internal::Quantity;
-using libdan::internal::Unit;
+using libdan::Quantity;
+using libdan::Unit;
 using libdan::internal::UnitSystem;
 
 TEST_CASE("Quantity converts compatible units", "[quantity]") {

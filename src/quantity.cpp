@@ -1,7 +1,8 @@
-#include <quantity.h>
+#include <libdan/quantity.h>
+#include <dimension.h>
 #include <stdexcept>
 
-namespace libdan::internal {
+namespace libdan {
 	Quantity::Quantity(double value, Unit unit) :
 		value_(value),
 		unit_(std::move(unit)) {}
