@@ -1,4 +1,5 @@
 #include <catch2/catch_test_macros.hpp>
+#include <unit_system.h>
 #include <dimension.h>
 
 using libdan::internal::UnitSystem;

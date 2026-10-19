@@ -1,11 +1,12 @@
 #pragma once
 
 #include <types.h>
-#include <unit_system.h>
 
 #include <vector>
 
 namespace libdan::internal {
+	class UnitSystem;
+
 	struct DimensionTerm {
 		BaseDimensionId base;
 		Exponent exponent;

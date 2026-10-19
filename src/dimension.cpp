@@ -1,3 +1,4 @@
+#include <unit_system.h>
 #include <dimension.h>
 
 #include <stdexcept>
