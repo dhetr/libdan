@@ -12,6 +12,7 @@ add_library(dan
 	src/dimension.cpp
 	src/unit.cpp
 	src/quantity.cpp
+	src/unit_system.cpp
 	src/libdan.cpp
 )
 
@@ -53,6 +54,7 @@ if(BUILD_TESTING)
 		tests/test_dimension.cpp
 		tests/test_unit.cpp
 		tests/test_quantity.cpp
+		tests/test_unit_system.cpp
 	)
 
 	target_include_directories(libdan_tests PRIVATE
