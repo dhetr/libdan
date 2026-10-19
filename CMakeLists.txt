@@ -14,6 +14,7 @@ add_library(dan
 	src/quantity.cpp
 	src/unit_system.cpp
 	src/libdan.cpp
+	src/si.cpp
 )
 
 set_target_properties(dan PROPERTIES
