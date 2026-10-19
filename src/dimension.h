@@ -1,10 +1,11 @@
 #pragma once
 
+#include <unit_system.h>
+
 #include <cstdint>
 #include <vector>
 
 namespace libdan::internal {
-	using BaseDimensionId = std::uint32_t;
 	using Exponent = std::int32_t;
 
 	struct DimensionTerm {
@@ -16,23 +17,25 @@ namespace libdan::internal {
 
 	class Dimension {
 	public:
-		constexpr Dimension() = default;
+		explicit Dimension(const UnitSystem& system);
 
-		static Dimension base(BaseDimensionId id);
+		static Dimension base(const UnitSystem& system, BaseDimensionId id);
 
+		[[nodiscard]] const UnitSystem& system() const noexcept;
 		[[nodiscard]] bool is_dimensionless() const noexcept;
 		[[nodiscard]] const std::vector<DimensionTerm>& terms() const noexcept;
 		
-		bool operator==(const Dimension&) const = default;
+		bool operator==(const Dimension&) const;
 
 		friend Dimension operator*(const Dimension&, const Dimension&);
 		friend Dimension operator/(const Dimension&, const Dimension&);
 		friend Dimension pow(const Dimension&, Exponent);
 		
 	private:
+		const UnitSystem* system_;
 		std::vector<DimensionTerm> terms_;
 
-		explicit Dimension(std::vector<DimensionTerm> terms);
+		explicit Dimension(const UnitSystem& system, std::vector<DimensionTerm> terms);
 
 		static Exponent checked_add(Exponent a, Exponent b);
 		static Exponent checked_multiply(Exponent a, Exponent b);
