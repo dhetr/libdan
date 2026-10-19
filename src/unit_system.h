@@ -1,12 +1,11 @@
 #pragma once
 
-#include <cstddef>
+#include <types.h>
+
 #include <string>
 #include <vector>
 
 namespace libdan::internal {
-	using BaseDimensionId = std::size_t;
-
 	struct BaseDimension {
 		BaseDimensionId id;
 		std::string name;

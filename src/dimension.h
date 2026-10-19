@@ -1,13 +1,11 @@
 #pragma once
 
+#include <types.h>
 #include <unit_system.h>
 
-#include <cstdint>
 #include <vector>
 
 namespace libdan::internal {
-	using Exponent = std::int32_t;
-
 	struct DimensionTerm {
 		BaseDimensionId base;
 		Exponent exponent;
