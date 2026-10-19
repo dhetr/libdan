@@ -1,8 +1,8 @@
 #include <catch2/catch_test_macros.hpp>
-#include <unit_system.h>
+#include <libdan/unit_system.h>
 #include <dimension.h>
 
-using libdan::internal::UnitSystem;
+using libdan::UnitSystem;
 using libdan::internal::Dimension;
 using libdan::internal::DimensionTerm;
 

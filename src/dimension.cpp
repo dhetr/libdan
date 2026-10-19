@@ -1,4 +1,4 @@
-#include <unit_system.h>
+#include <libdan/unit_system.h>
 #include <dimension.h>
 
 #include <stdexcept>
@@ -9,7 +9,7 @@ namespace libdan::internal {
 	Dimension::Dimension(const UnitSystem& system, std::vector<DimensionTerm> terms) : 
 		system_(&system), terms_(std::move(terms)) {}
 
-	Dimension Dimension::base(const UnitSystem& system, BaseDimensionId id) {
+	Dimension Dimension::base(const UnitSystem& system, types::BaseDimensionId id) {
 		if (id >= system.base_dimensions().size()) {
 			throw std::out_of_range("Invalid base dimension ID");
 		}
@@ -42,7 +42,7 @@ namespace libdan::internal {
 		return Dimension::combine(a, b, -1);
 	}
 
-	Dimension pow(const Dimension& d, Exponent exponent) {
+	Dimension pow(const Dimension& d, types::Exponent exponent) {
 		std::vector<DimensionTerm> result;
 		result.reserve(d.terms_.size());
 
@@ -58,7 +58,7 @@ namespace libdan::internal {
 		return Dimension(d.system(), std::move(result));
 	}
 
-	Dimension Dimension::combine(const Dimension& a, const Dimension& b, Exponent sign) {
+	Dimension Dimension::combine(const Dimension& a, const Dimension& b, types::Exponent sign) {
 		if (a.system_ != b.system_)
 			throw std::invalid_argument(
 				"Cannot combine dimensions from different unit systems");
@@ -100,25 +100,25 @@ namespace libdan::internal {
 		return Dimension(a.system(), std::move(result));
 	}
 
-	Exponent Dimension::checked_add(Exponent a, Exponent b) {
+	types::Exponent Dimension::checked_add(types::Exponent a, types::Exponent b) {
 		const auto result = static_cast<std::int64_t>(a) + b;
 
-		if (result < std::numeric_limits<Exponent>::min() ||
-			result > std::numeric_limits<Exponent>::max()) {
+		if (result < std::numeric_limits<types::Exponent>::min() ||
+			result > std::numeric_limits<types::Exponent>::max()) {
 			throw std::overflow_error("Dimension exponent overflow");
 		}
 
-		return static_cast<Exponent>(result);
+		return static_cast<types::Exponent>(result);
 	}
 
-	Exponent Dimension::checked_multiply(Exponent a, Exponent b) {
+	types::Exponent Dimension::checked_multiply(types::Exponent a, types::Exponent b) {
 		const auto result = static_cast<std::int64_t>(a) * b;
 
-		if (result < std::numeric_limits<Exponent>::min() ||
-			result > std::numeric_limits<Exponent>::max()) {
+		if (result < std::numeric_limits<types::Exponent>::min() ||
+			result > std::numeric_limits<types::Exponent>::max()) {
 			throw std::overflow_error("Dimension exponent overflow");
 		}
 
-		return static_cast<Exponent>(result);
+		return static_cast<types::Exponent>(result);
 	}
 }

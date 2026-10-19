@@ -1,9 +1,9 @@
 #include <dimension.h>
-#include <unit_system.h>
+#include <libdan/unit_system.h>
 
 #include <stdexcept>
 
-namespace libdan::internal {
+namespace libdan {
 	UnitSystem::UnitSystem(std::string name) : name_(std::move(name)) {
 		if (name_.empty())
 			throw std::invalid_argument(
@@ -19,7 +19,7 @@ namespace libdan::internal {
 		return base_dimensions_;
 	}
 
-	BaseDimensionId UnitSystem::add_base_dimension(std::string name) {
+	types::BaseDimensionId UnitSystem::add_base_dimension(std::string name) {
 		if (name.empty())
 			throw std::invalid_argument("Base dimension name cannot be empty");
 
@@ -32,19 +32,19 @@ namespace libdan::internal {
 		return id;
 	}
 
-	UnitId UnitSystem::add_unit(Unit unit) {
+	types::UnitId UnitSystem::add_unit(Unit unit) {
 		if (&unit.dimension().system() != this) {
 			throw std::invalid_argument(
 				"Unit dimension belongs to a different unit system"
 			);
 		}
 
-		const UnitId id = units_.size();
+		const types::UnitId id = units_.size();
 		units_.push_back(std::move(unit));
 		return id;
 	}
 
-	const Unit& UnitSystem::unit(UnitId id) const {
+	const Unit& UnitSystem::unit(types::UnitId id) const {
 		if (id >= units_.size()) {
 			throw std::out_of_range("Invalid unit ID");
 		}

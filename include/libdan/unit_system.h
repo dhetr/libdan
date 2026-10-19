@@ -1,14 +1,14 @@
 #pragma once
 
 #include <libdan/unit.h>
-#include <types.h>
+#include <libdan/types.h>
 
 #include <string>
 #include <vector>
 
-namespace libdan::internal {
+namespace libdan {
 	struct BaseDimension {
-		BaseDimensionId id;
+		types::BaseDimensionId id;
 		std::string name;
 	};
 
@@ -23,10 +23,10 @@ namespace libdan::internal {
 
 		[[nodiscard]] const std::string& name() const noexcept;
 		[[nodiscard]] const std::vector<BaseDimension>& base_dimensions() const noexcept;
-		[[nodiscard]] const Unit& unit(UnitId id) const;
+		[[nodiscard]] const Unit& unit(types::UnitId id) const;
 
-		BaseDimensionId add_base_dimension(std::string name);
-		UnitId add_unit(Unit unit);
+		types::BaseDimensionId add_base_dimension(std::string name);
+		types::UnitId add_unit(Unit unit);
 	private:
 		std::string name_;
 		std::vector<BaseDimension> base_dimensions_;
